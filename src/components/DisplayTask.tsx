@@ -37,7 +37,7 @@ export default function DisplayTask({ task, type }: any) {
             marginTop: '100px',
           }}
         >
-          <img src="src\assets\EmptyTrash.png" alt="empty trash" />
+          <img src="public\EmptyTrash.png" alt="empty trash" />
           <Typography variant="h6" color={'green'}>
             No tasks to display!
           </Typography>
