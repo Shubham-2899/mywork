@@ -17,7 +17,14 @@ export default function DisplayTask({ task, displayType, handleDragStart }: any)
 
   return (
     <div
-      style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '10px' }}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: '10px',
+        marginBottom: '15px',
+      }}
     >
       <div style={{ marginTop: '10px', borderBottom: '1px solid black' }}>
         <Typography variant="h6" sx={{ textAlign: 'center' }}>
