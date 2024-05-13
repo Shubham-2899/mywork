@@ -7,16 +7,7 @@ const TaskContext = createContext<{ myTasks: Task[]; setMyTasks: React.Dispatch<
 });
 
 const MyTaskContext = ({ children }: { children: ReactElement }) => {
-  const [myTasks, setMyTasks] = useState<Task[]>([
-    {
-      id: '123',
-      task: 'Test task',
-      description:
-        'Test description Lorem ipsum dolor sit amet consectetur, adipisicing elit. Corporis fuga perferendis accusantium expedita maxime neque pariatur excepturi? Possimus dolor enim eum illo incidunt ipsa nam?',
-      priority: 'High',
-      status: 'todo',
-    },
-  ]);
+  const [myTasks, setMyTasks] = useState<Task[]>([]);
 
   return <TaskContext.Provider value={{ myTasks, setMyTasks }}>{children}</TaskContext.Provider>;
 };

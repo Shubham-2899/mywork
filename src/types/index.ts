@@ -3,7 +3,7 @@ export type Task = {
   task: string;
   description: string;
   priority: Priority;
-  status: 'todo' | 'in-progress' | 'done';
+  status: 'todo' | 'in progress' | 'done';
 };
 
 export type Priority = 'High' | 'Medium' | 'Low';
