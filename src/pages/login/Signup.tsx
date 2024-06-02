@@ -50,7 +50,7 @@ const Signup = () => {
               alert(error);
             });
         }
-        navigate('/');
+        navigate('/signin');
       } catch (err) {
         setError('Email Already in Use');
         alert(err);

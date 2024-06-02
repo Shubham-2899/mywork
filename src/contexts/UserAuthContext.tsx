@@ -35,6 +35,7 @@ export function UserAuthContextProvider({ children }: AuthProviderProps) {
     return signInWithEmailAndPassword(auth, email, password);
   }
   function signUp(email: string, password: string, username: string) {
+    console.log('username:', username);
     setLogin(false);
     return createUserWithEmailAndPassword(auth, email, password);
   }

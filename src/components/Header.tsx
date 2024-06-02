@@ -13,10 +13,10 @@ import mydailyworkIcon from '../assets/mydailywork.svg';
 import { useUserAuth } from '../contexts/UserAuthContext';
 import { Button } from '@mui/material';
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+export const logoutChannel = new BroadcastChannel('logout');
 
 function Header() {
-  const { login, setLogin } = useUserAuth();
+  const { login, setLogin, user, logOut } = useUserAuth();
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const navigate = useNavigate();
 
@@ -28,24 +28,24 @@ function Header() {
     setAnchorElUser(null);
   };
 
-  const handleMenuItemClick = (setting: string) => {
-    handleCloseUserMenu();
-    switch (setting) {
-      case 'Profile':
-        navigate('/profile');
-        break;
-      case 'Account':
-        navigate('/account');
-        break;
-      case 'Dashboard':
-        navigate('/dashboard');
-        break;
-      case 'Logout':
-        // Handle logout logic here
-        navigate('/logout');
-        break;
-      default:
-        break;
+  React.useEffect(() => {
+    let authToken = localStorage.getItem('Auth Token');
+    if (authToken?.length) {
+      setLogin(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleLogOut = async () => {
+    try {
+      logoutChannel.postMessage('Logout');
+      await logOut();
+      localStorage.removeItem('Auth Token');
+      localStorage.removeItem('user');
+      setLogin(false);
+      navigate('/');
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -66,7 +66,7 @@ function Header() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt={user?.displayName || 'User'} src="/static/images/avatar/2.jpg" />
               </IconButton>
             </Tooltip>
             <Menu
@@ -85,16 +85,21 @@ function Header() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={() => handleMenuItemClick(setting)}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem onClick={handleCloseUserMenu}>
+                <Typography textAlign="center">{user?.displayName}</Typography>
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  handleLogOut();
+                }}
+              >
+                <Typography textAlign="center">Logout</Typography>
+              </MenuItem>
             </Menu>
           </Box>
         ) : (
           <Button sx={{ marginLeft: 'auto', color: 'white' }} variant="contained">
-            <Link to="/signin" className="btn">
+            <Link to="/signin" style={{ color: 'white', textDecoration: 'none' }}>
               Log In
             </Link>
           </Button>

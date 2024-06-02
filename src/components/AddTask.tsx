@@ -16,6 +16,8 @@ import { Priority, Task } from '../types';
 import { FormEvent } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { TaskContext } from '../contexts/MyTaskContext';
+import { useUserAuth } from '../contexts/UserAuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -36,6 +38,7 @@ const style = {
 
 const AddTask = () => {
   const [openAddTaskModal, setOpenAddTaskModal] = useState(false);
+  const { login } = useUserAuth();
   const [priority, setPriority] = useState<Priority>('Low');
   const [task, setTask] = useState<Task>({
     id: '',
@@ -46,6 +49,7 @@ const AddTask = () => {
   });
 
   const { myTasks, setMyTasks } = useContext(TaskContext);
+  const navigate = useNavigate();
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -80,9 +84,17 @@ const AddTask = () => {
 
   console.log('🚀 ~ AddTask ~ task:', task);
 
+  const handleAddTaskClick = () => {
+    if (login) {
+      setOpenAddTaskModal(true);
+    } else {
+      navigate('/signin');
+    }
+  };
+
   return (
     <div>
-      <Button variant="contained" disableRipple={true} onClick={() => setOpenAddTaskModal(true)}>
+      <Button variant="contained" disableRipple={true} onClick={() => handleAddTaskClick()}>
         Add Task!
       </Button>
       <Modal
